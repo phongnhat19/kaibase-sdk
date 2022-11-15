@@ -1,3 +1,5 @@
 export interface TransactionModuleParams {
-  fullEndpoint: string;
+  kaibaseEndpoint: string;
+  clientId: string;
+  clientSecret: string;
 }

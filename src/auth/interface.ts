@@ -1,5 +1,7 @@
 export interface AuthModuleParams {
-  fullEndpoint: string;
+  kaibaseEndpoint: string;
+  clientId: string;
+  clientSecret: string;
 }
 
 export interface RegisterUserParams {

@@ -1,10 +1,20 @@
 import { TransactionModuleParams } from "./interface";
 
 class KaibaseTransaction {
-  private fullEndpoint = '';
+  private kaibaseEndpoint = '';
+  private clientId = ''
+  private clientSecret = ''
 
   constructor(options: TransactionModuleParams) {
-    this.fullEndpoint = options.fullEndpoint;
+    this.kaibaseEndpoint = options.kaibaseEndpoint;
+    this.clientId = options.clientId;
+    this.clientSecret = options.clientSecret;
+  }
+
+  public getClientHeader() {
+    return {
+      'Authorization': 'Basic ' + btoa(`${this.clientId}:${this.clientSecret}`),
+    }
   }
 
   private async _request({method, path = '', headers = {}, body, token}: {method: string, path?: string, headers?: Record<string, any>, body: any, token?: string}) {
@@ -21,7 +31,7 @@ class KaibaseTransaction {
       fullHeader['Authorization'] = `Bearer ${token}`
     }
 
-    return fetch(`${this.fullEndpoint}/${path}`, {
+    return fetch(`https://${this.kaibaseEndpoint}/${path}`, {
       method,
       headers: fullHeader,
       body: formBody

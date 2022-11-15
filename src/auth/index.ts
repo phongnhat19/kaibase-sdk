@@ -2,10 +2,14 @@ import fetch from 'cross-fetch';
 import { AuthModuleParams, RegisterUserParams } from "./interface";
 
 class Auth {
-  private fullEndpoint = '';
+  private kaibaseEndpoint = '';
+  private clientId = ''
+  private clientSecret = ''
 
   constructor(options: AuthModuleParams) {
-    this.fullEndpoint = options.fullEndpoint;
+    this.kaibaseEndpoint = options.kaibaseEndpoint;
+    this.clientId = options.clientId;
+    this.clientSecret = options.clientSecret;
   }
 
   private async _request({method, path = '', headers = {}, body, token}: {method: string, path?: string, headers?: Record<string, any>, body: any, token?: string}) {
@@ -22,7 +26,7 @@ class Auth {
       fullHeader['Authorization'] = `Bearer ${token}`
     }
 
-    return fetch(`${this.fullEndpoint}/${path}`, {
+    return fetch(`https://${this.kaibaseEndpoint}/${path}`, {
       method,
       headers: fullHeader,
       body: formBody
@@ -39,7 +43,10 @@ class Auth {
     const rs = await this._request({
       method: 'POST',
       body: params,
-      path: 'oauth2/token/'
+      path: 'oauth2/token/',
+      headers: {
+        'Authorization': 'Basic ' + btoa(`${this.clientId}:${this.clientSecret}`),
+      }
     })
     
     return rs.json();
@@ -57,7 +64,10 @@ class Auth {
     const rs = await this._request({
       method: 'POST',
       body: params,
-      path: 'user/register/'
+      path: 'user/register/',
+      headers: {
+        'Authorization': 'Basic ' + btoa(`${this.clientId}:${this.clientSecret}`),
+      }
     })
 
     return rs.json();

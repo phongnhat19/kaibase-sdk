@@ -1,5 +1,4 @@
 import Auth from "./auth";
-import { ChainId } from "./constant/chain";
 import KaibaseTransaction from "./transaction";
 
 interface KaiBaseClientProps {
@@ -10,32 +9,16 @@ interface KaiBaseClientProps {
 }
 
 class KaiBaseClient {
-  public chainId = ChainId.MAINNET
-  private kaibaseEndpoint = ''
-  private clientId = ''
-  private clientSecret = ''
 
   public auth: Auth
   public transaction: KaibaseTransaction
 
   constructor(options: KaiBaseClientProps) {
-    this.kaibaseEndpoint = options.kaibaseEndpoint;
-    this.clientId = options.clientId;
-    this.clientSecret = options.clientSecret;
 
-    this.auth = new Auth({
-      fullEndpoint: `https://${this.clientId}:${this.clientSecret}@${this.kaibaseEndpoint}`
-    })
+    this.auth = new Auth(options)
 
-    this.transaction = new KaibaseTransaction({
-      fullEndpoint: `https://${this.clientId}:${this.clientSecret}@${this.kaibaseEndpoint}`
-    });
-
-    if (options.chainId) {
-      this.chainId = options.chainId;
-    }
+    this.transaction = new KaibaseTransaction(options);
   }
-
 }
 
 export default KaiBaseClient;
