@@ -1,3 +1,4 @@
+import fetch from 'cross-fetch';
 import { TransactionModuleParams } from "./interface";
 
 class KaibaseTransaction {
