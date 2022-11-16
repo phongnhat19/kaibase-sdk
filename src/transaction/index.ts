@@ -80,18 +80,22 @@ class KaibaseTransaction {
     const web3 = new Web3(httpProvider)
     const nonce = await web3.eth.getTransactionCount(walletAddress)
 
-    const estimatedGas = await web3.eth.estimateGas({...txData})
-    console.log(estimatedGas)
     // Parse tx data
     txData.nonce = nonce;
     if (!txData.gasPrice) {
       txData.gasPrice = 1000000000
     }
     if (!txData.gas) {
+      const estimatedGas = await web3.eth.estimateGas({
+        data: txData.data,
+        to: txData.to,
+        from: txData.from
+      }) 
       txData.gas = estimatedGas
     }
-
-    console.log('final tx data', txData)
+    if (!txData.value) {
+      txData.value = 0
+    }
 
     const rs = await this._request({
       method: 'POST',
