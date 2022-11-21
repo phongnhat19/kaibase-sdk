@@ -13,15 +13,13 @@ describe('Unit test', () => {
   })
 
   it('Should login successfully', async () => {
-    const rs = await client.auth.login({username: 'account_for_demo_dapp', password: '111'})
-    console.log(rs)
+    const rs = await client.auth.login({username: 'account_for_demo_dapp', password: 'abcdef@123123!'})
     expect(rs).toBeDefined();
   })
 
   it('Should register successfully', async () => {
     const userData = {username: 'account_for_demo_dapp', password: 'abcdef@123123!', email: 'account_for_demo_dapp@gmail.com', firstName: 'Account', lastName: 'Test'}
     const rs = await client.auth.register(userData)
-    console.log(rs)
     expect(rs).toBeDefined();
   })
 
@@ -29,14 +27,13 @@ describe('Unit test', () => {
     const rs = await client.auth.login({username: 'account_for_demo_dapp', password: 'abcdef@123123!'})
     const token = rs.access_token;
     const txData = {
-      "gas": 1000000,
-      // "gasPrice": 1000000000,
-      "data": "0x000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000006000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000003000000000000000000000000000000000000000000000000000000000000000300000000000000000000000000000000000000000000000000000000000000030000000000000000000000000000000000000000000000000000000000000001",
-      "to": "0x617c0B8778fD94031bc945cf03B9E4074AA5f946",
-      "value": 0,
+      "gas": 100000,
+      "gasPrice": 2000000000,
+      "data": "0x0000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000002",
+      "to": "0xBf991B0089809E07d3657eB8BDBB64F86672f6cF",
+      "value": 0
     }
     const tx = await client.transaction.signAndSendTransaction(txData, token)
-    console.log(tx)
     expect(tx).toBeDefined();
     expect(tx.error).toBeUndefined();
   })
